@@ -20,6 +20,20 @@ function todoReducer(state, action){
         const updatedList = state.filter(t => t.id != todo.id);
         return updatedList;
     }
+    else if(action.type == 'finish_todo'){
+        let todo = action.payload.todo;
+        let isFinished = action.payload.isFinished;
+        const updateList = state.map(t => {
+            if(t.id == todo.id) {
+                todo.finished = isFinished; 
+            }
+            return t;
+        })
+        return updateList;
+    }
+    else{
+        return state;
+    }
 }
 
 export default todoReducer;

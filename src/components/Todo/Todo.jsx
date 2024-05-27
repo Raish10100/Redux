@@ -12,7 +12,7 @@ function Todo({todoData, isFinished, changeFinished, onDelete, onEdit}){
                 setFinished(e.target.checked);
                 changeFinished(e.target.checked);
             }}  />
-            {isEditting ? (<input type="text" onChange={(e) => setEditText(e.target.value)} />) : ( <span>{todoData}</span>)}
+            {isEditting ? (<input type="text" value={editText}  onChange={(e) => setEditText(e.target.value)} />) : ( <span>{todoData}</span>)}
             <button onClick={() => {
                 setIsEditting(!isEditting);
                 onEdit(editText)
