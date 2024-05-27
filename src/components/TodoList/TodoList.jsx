@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Todo from "../Todo/Todo";
+import TodoContext from "../../context/TodoContext";
 
-function TodoList({list}){
+function TodoList({}){
 
+    const {list, setList} = useContext(TodoContext)
   
 
     return (
@@ -15,10 +17,24 @@ function TodoList({list}){
                                                         changeFinished={(isFinished) => {
                                                             const updateList = list.map(t => {
                                                                 if(t.id == todo.id) {
-                                                                    todo.finished = isFinished;
+                                                                    todo.finished = isFinished; 
                                                                 }
                                                                 return t;
                                                             })
+                                                            setList(updateList)
+                                                        }}
+                                                        onDelete={() => {
+                                                            const updatedList = list.filter(t => t.id != todo.id);
+                                                            setList(updatedList);
+                                                        }}
+                                                        onEdit={(todoText) => {
+                                                            const updatedList = list.map(t => {
+                                                                if(t.id == todo.id) {
+                                                                    todo.todoData = todoText;
+                                                                }
+                                                                return t;
+                                                            });
+                                                            setList(updatedList);
                                                         }}
                                                   />)}
         </div>
