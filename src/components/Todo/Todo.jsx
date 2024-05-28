@@ -1,25 +1,20 @@
 import { useState } from "react";
 
-function Todo({todoData, isFinished, changeFinished, onDelete, onEdit}){
+function Todo({ finishTodo, editTodo, deleteTodo, text, isFinished }) {
 
-    const [finished, setFinished] = useState(isFinished);
     const [isEditting, setIsEditting] = useState(false);
-    const [editText, setEditText] = useState(todoData);
+    const [todoText, setTodoText] = useState(text);
 
     return (
-        <div>
-            <input type="checkbox" checked={finished} onChange={(e) => {
-                setFinished(e.target.checked);
-                changeFinished(e.target.checked);
-            }}  />
-            {isEditting ? (<input type="text" value={editText}  onChange={(e) => setEditText(e.target.value)} />) : ( <span>{todoData}</span>)}
+        <div>  
+            <input type="checkbox" checked={isFinished} onChange={() => finishTodo(!isFinished)} />
+            {isEditting? <input value={todoText} onChange={(e) => setTodoText(e.target.value)} /> : <span> {todoText} </span>}
             <button onClick={() => {
                 setIsEditting(!isEditting);
-                onEdit(editText)
-            }}>{(!isEditting) ? 'Edit' : 'Save'}</button>
-            <button onClick={onDelete}>Delete</button>
+                editTodo(todoText);
+            }}> {isEditting? 'Save' : 'Edit'} </button>
+            <button onClick={deleteTodo}> Delete </button>
         </div>
-    )   
+    );
 }
-
 export default Todo;

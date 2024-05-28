@@ -1,26 +1,26 @@
-import { useContext, useState } from "react";
-import TodoDispatchContext from "../../context/TodoDispatchContext";
+import { useState } from "react";
 
-function AddTodo() {
-  const [inputText, setInputText] = useState("");
-  const {dispatch} = useContext(TodoDispatchContext)
+function AddTodo({ addTodo }) {
+    const [todoText, setTodoText] = useState('');
 
-  return (
-    <>
-      <input
-        type="text"
-        placeholder="Add todo here..."
-        onChange={(e) => setInputText(e.target.value)}
-        value={inputText}
-      />
-      <button onClick={() => {
-               dispatch({type: 'add_todo', payload: {todoText: inputText}})
-                setInputText("")
-            }
-            }
-             >Add</button>
-    </>
-  );
+    function onAddTodo(todoText) {
+        addTodo({todoText}) 
+    }
+
+    return (
+        <>
+            <input 
+                placeholder="add your next todo...."
+                onChange={(e) => setTodoText(e.target.value)}
+                value={todoText}
+            />
+            <button onClick={() => {
+               onAddTodo(todoText)
+               setTodoText('');
+            }}>Submit</button>
+        </>
+    )
+
 }
 
 export default AddTodo;

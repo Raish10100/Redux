@@ -1,39 +1,35 @@
-import { useContext, useState } from "react";
 import Todo from "../Todo/Todo";
-import TodoContext from "../../context/TodoContext";
-import TodoDispatchContext from "../../context/TodoDispatchContext";
+import { useSelector } from "react-redux";
 
-function TodoList({}){
-    const {list, setList} = useContext(TodoContext);
-    const {dispatch} = useContext(TodoDispatchContext)
+function TodoList({ editTodo, deleteTodo, finishTodo }) {
 
+    const todos = useSelector(state =>{
+        return state.todo.todoList
+    })
 
-    function onFinished(todo, isFinished) {
-        dispatch({type: 'finish_todo', payload: {todo, isFinished}})
-    };
-
-    function onDelete(todo) {
-       dispatch({type: 'delete_todo', payload: {todo}})
+    function onDeleteTodo(id) {
+        deleteTodo({id});
+    }
+ 
+    function onEditTodo(id, newTodo) {
+        editTodo({id, newTodo})
     }
 
-    function onEdit(todo, todoText) {
-       dispatch({type: 'edit_todo', payload: {todo, todoText}})
+    function onFinishTodo(id, state) {
+        finishTodo({id, state})
     }
-
 
     return (
-        <div>
-            { list.length > 0 && list.map(todo => <Todo
-                                                        key={todo.id} 
-                                                        isFinished= {todo.finished} 
-                                                        todoData = {todo.todoData} 
-                                                        id={todo.id}
-                                                        changeFinished={(isFinished) => onFinished(todo, isFinished)}
-                                                        onDelete={() => {onDelete(todo)}}
-                                                        onEdit={(todoText) => {onEdit(todo, todoText)}}
-                                                  />)}
-        </div>
-    )
+        todos && todos.map(
+            (todo) => <Todo 
+                        key={todo.id} 
+                        text={todo.text} 
+                        isFinished={todo.isFinished} 
+                        editTodo={(newTodo) => onEditTodo(todo.id, newTodo)}
+                        deleteTodo={() => onDeleteTodo(todo.id)}
+                        finishTodo={(state) => onFinishTodo(todo.id, state)}
+        />)
+    );
 }
 
 export default TodoList;
